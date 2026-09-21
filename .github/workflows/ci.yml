@@ -10,28 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-
+          cache: pnpm
       - name: Install
-        run: npm install --no-audit --no-fund
-
+        run: pnpm install --frozen-lockfile
       - name: Types
-        run: npm run typecheck
-
+        run: pnpm run typecheck
       - name: Lint
-        run: npm run lint
-
+        run: pnpm run lint
       - name: Unit tests
-        run: npm test
-
+        run: pnpm test
       - name: Build
-        run: npm run build
-
+        run: pnpm run build
       # Boots the built Worker and asserts over real HTTP, including a
       # live-gateway phase served by scripts/fake-gateway.mjs. No secrets.
       - name: End-to-end
-        run: npm run test:e2e
+        run: pnpm run test:e2e
